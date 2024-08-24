@@ -1,0 +1,28 @@
+.auth-container {
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+
+}
+
+.auth-container>form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.auth-container>h1 {
+    padding-top: 100px;
+    padding-bottom: 20px;
+
+}
+
+.auth-container form:nth-of-type(2)>button {
+    border: none;
+    padding: 16px;
+    background-color: transparent;
+    margin-top: 24px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+

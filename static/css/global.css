@@ -1,0 +1,145 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap');
+
+*,
+*::before,
+*::after {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    color: rgb(75, 75, 75)
+}
+
+body {
+    font-family: "Inter", sans-serif;
+    background-color: rgb(255, 246, 226);
+    width: 100%;
+    height: 100vh;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+header {
+    width: 100%;
+    height: 80px;
+    background-color: rgb(115, 168, 144);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+main {
+    width: 900px;
+    padding-top: 40px;
+}
+
+nav {
+    width: 1000px;
+    height: inherit;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+}
+
+a {
+    text-decoration: none;
+}
+
+nav>a {
+    color: white;
+    height: inherit;
+    width: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+}
+
+nav>form>button {
+    border: none;
+    background-color: transparent;
+    color: white;
+    width: 120px;
+    cursor: pointer;
+    height: 80px;
+    font-size: 1.5rem;
+}
+
+input {
+    border-radius: 10px;
+    background-color: rgb(255, 255, 246);
+    font-size: 1.2rem;
+    padding: 12px 16px;
+    filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.15));
+    border: none;
+}
+
+.filled-button {
+    border: none;
+    background-color: rgb(146, 69, 255);
+    font-size: 1.4rem;
+    padding: 10px 24px;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+}
+
+
+.flash-container {
+    position: absolute;
+    top: 100px;
+    left: 0;
+    right: 0;
+
+    z-index: 10;
+    display: flex;
+    /* align-items: center; */
+    justify-content: center;
+}
+
+.flash-message {
+    background-color: rgb(255, 255, 255);
+    filter: drop-shadow(0px 0px 12px rgba(0, 0, 0, 0.15));
+    border-radius: 12px;
+    font-size: 1.6rem;
+    padding: 12px 20px;
+}
+
+.invalid-input-field {
+    outline: 2px solid red;
+}
+
+.invalid-input-field+label {
+    color: red;
+    font-weight: bold;
+    padding-left: 8px;
+}
+
+
+.flash-message {
+    color: #00000080;
+    padding: 16px 24px;
+    border-radius: 8px;
+    position: absolute;
+    top: 100px;
+    margin: 0px 16px;
+    max-width: 432px;
+    z-index: 2;
+}
+
+
+.error-flash {
+    background-color: rgb(242, 105, 105);
+}
+
+.info-flash {
+    background-color: rgb(141, 141, 254);
+}
+
+.success-flash {
+    background-color: #5ada8e;
+}
