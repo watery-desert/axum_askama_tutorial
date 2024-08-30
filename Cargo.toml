@@ -7,4 +7,9 @@ edition = "2021"
 tokio ={ version = "1.39.3", features = ["full"]}
 axum ={ version = "0.7.5", features = ["macros"]}
 askama ={ version = "0.12.1"}
-tower-http ={ version = "0.5.2", features = ["fs"]}
+tower-http ={ version = "0.5.2", features = ["fs", "trace"]}
+tracing = "0.1.40"
+tracing-subscriber = { version =  "0.3.18", features = ["env-filter"] }
+serde = {version = "1.0.209", features = ["derive"]}
+validator = { version = "0.18.1", features = ["derive"] }
+regex = {version = "1.10.6"}
