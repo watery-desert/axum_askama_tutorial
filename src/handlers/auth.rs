@@ -1,13 +1,12 @@
 use crate::models::{
     templates::{LogInTemplate, SignUpTemplate},
-    user_form_model::AuthForm,
+    user_form_model::UserFormModel,
 };
 use askama::Template;
 use axum::{
     response::{Html, IntoResponse, Redirect, Response},
     Form,
 };
-use validator::Validate;
 
 pub async fn sign_up_handler() -> Response {
     let html_string = SignUpTemplate {}.render().unwrap();
@@ -15,15 +14,12 @@ pub async fn sign_up_handler() -> Response {
     Html(html_string).into_response()
 }
 
-pub async fn post_sign_up_hander(Form(signup_from): Form<AuthForm>) -> Response {
-    match signup_from.validate() {
-        Ok(_) => Redirect::to("/").into_response(),
-        Err(err) => {
-            tracing::info!("{}", err);
-
-            Redirect::to("/").into_response()
-        }
-    };
+pub async fn post_sign_up_hander(Form(user_form): Form<UserFormModel>) -> Response {
+    tracing::info!(
+        "Email is {} and the password is {}",
+        user_form.email,
+        user_form.password
+    );
 
     Redirect::to("/").into_response()
 }

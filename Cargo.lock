@@ -161,7 +161,6 @@ version = "0.1.0"
 dependencies = [
  "askama",
  "axum",
- "regex",
  "serde",
  "tokio",
  "tower-http",

@@ -12,4 +12,3 @@ tracing = "0.1.40"
 tracing-subscriber = { version =  "0.3.18", features = ["env-filter"] }
 serde = {version = "1.0.209", features = ["derive"]}
 validator = { version = "0.18.1", features = ["derive"] }
-regex = {version = "1.10.6"}
