@@ -12,7 +12,7 @@ async fn main() {
 
     init::logging();
 
-    init::database_connection().await;
+    // init::database_connection().await;
 
     tracing::info!("Server is starting...");
 
