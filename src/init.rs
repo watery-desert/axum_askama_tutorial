@@ -1,10 +1,10 @@
 use tracing_subscriber::{EnvFilter, FmtSubscriber};
 
-// use sqlx::{
-//     postgres::{PgConnectOptions, PgPool, PgPoolOptions},
-//     ConnectOptions,
-// };
-// use std::{str::FromStr, time::Duration};
+use sqlx::{
+    postgres::{PgConnectOptions, PgPool, PgPoolOptions},
+    ConnectOptions,
+};
+use std::{str::FromStr, time::Duration};
 
 pub fn logging() {
     let filter = EnvFilter::builder()
@@ -19,30 +19,28 @@ pub fn logging() {
     tracing::subscriber::set_global_default(subscriber).expect("Failed to set up logging");
 }
 
+pub async fn database_connection() -> PgPool {
+    tracing::debug!("Setting up database connection");
+    let db_url = dotenvy::var("DATABASE_URL").expect("Failed to get database url from env");
 
-// pub async fn database_connection() -> PgPool {
+    let options = PgConnectOptions::from_str(&db_url)
+        .expect("failed to parse url")
+        .disable_statement_logging();
 
-//     tracing::debug!("Setting up database connection");
-//     let db_url = dotenvy::var("DATABASE_URL").expect("Failed to get database url from env");
+    let pg_pool = PgPoolOptions::new()
+        .acquire_timeout(Duration::from_secs(5))
+        .connect_with(options)
+        .await
+        .expect("failed to connect to the database");
 
-//     let options = PgConnectOptions::from_str(&db_url)
-//         .expect("failed to parse url")
-//         .disable_statement_logging();
+    tracing::debug!("Successfully connected");
 
-//     let pg_pool = PgPoolOptions::new()
-//         .acquire_timeout(Duration::from_secs(5))
-//         .connect_with(options)
-//         .await
-//         .expect("failed to connect to the database");
+    sqlx::migrate!()
+        .run(&pg_pool)
+        .await
+        .expect("Failed to migrate");
 
-//     tracing::debug!("Successfully connected");
+    tracing::debug!("Successfully migrated");
 
-//     sqlx::migrate!()
-//         .run(&pg_pool)
-//         .await
-//         .expect("Failed to migrate");
-
-//     tracing::debug!("Successfully migrated");
-
-//     pg_pool
-// }
+    pg_pool
+}

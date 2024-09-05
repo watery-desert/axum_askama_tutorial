@@ -1,9 +1,7 @@
-use axum_askama_tutorial::{routes, init};
+use axum_askama_tutorial::{init, routes};
 
 #[tokio::main]
 async fn main() {
-
-
     let addr = "127.0.0.1:8000";
 
     let listener = tokio::net::TcpListener::bind(addr)
@@ -12,7 +10,7 @@ async fn main() {
 
     init::logging();
 
-    // init::database_connection().await;
+    init::database_connection().await;
 
     tracing::info!("Server is starting...");
 
@@ -20,6 +18,7 @@ async fn main() {
 
     let app = routes::router();
 
-    axum::serve(listener, app).await.expect("Failed to start the server");
-
+    axum::serve(listener, app)
+        .await
+        .expect("Failed to start the server");
 }

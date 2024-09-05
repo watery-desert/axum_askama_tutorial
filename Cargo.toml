@@ -4,13 +4,14 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-# tokio ={ version = "1.39.3", features = ["full"]}
-# axum ={ version = "0.7.5", features = ["macros"]}
-# askama ={ version = "0.12.1"}
-# tower-http ={ version = "0.5.2", features = ["fs", "trace"]}
-# tracing = "0.1.40"
-# tracing-subscriber = { version =  "0.3.18", features = ["env-filter"] }
-# serde = {version = "1.0.209", features = ["derive"]}
-# validator = { version = "0.18.1", features = ["derive"] }
-# regex = "1.10.6"
-# dotenvy = "0.15.7"
+tokio ={ version = "1.39.3", features = ["full"]}
+axum ={ version = "0.7.5", features = ["macros"]}
+askama ={ version = "0.12.1"}
+tower-http ={ version = "0.5.2", features = ["fs", "trace"]}
+tracing = "0.1.40"
+tracing-subscriber = { version =  "0.3.18", features = ["env-filter"] }
+serde = {version = "1.0.209", features = ["derive"]}
+validator = { version = "0.18.1", features = ["derive"] }
+regex = "1.10.6"
+dotenvy = "0.15.7"
+sqlx = {version = "0.8.0", features = [ "runtime-tokio", "tls-rustls", "postgres", "macros"]}
