@@ -1,4 +1,4 @@
-use axum_askama_tutorial::{init, routes};
+use axum_askama_tutorial::{init, routes, models::app::AppState};
 
 #[tokio::main]
 async fn main() {
@@ -10,13 +10,17 @@ async fn main() {
 
     init::logging();
 
-    init::database_connection().await;
+    let pg_pool = init::database_connection().await;
+
+    let app_state = AppState {
+        connection_pool: pg_pool
+    };
 
     tracing::info!("Server is starting...");
 
     tracing::info!("Listening at {}", addr);
 
-    let app = routes::router();
+    let app = routes::router(app_state);
 
     axum::serve(listener, app)
         .await

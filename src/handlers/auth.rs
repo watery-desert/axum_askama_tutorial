@@ -4,29 +4,56 @@ use crate::models::{
 };
 use askama::Template;
 use axum::{
+    extract::State,
     http::StatusCode,
     response::{Html, IntoResponse, Redirect, Response},
     Form,
 };
 use validator::Validate;
 
-use super::helpers;
+use super::{errors::AppError, helpers};
 
-pub async fn sign_up_handler() -> Response {
+use crate::{
+    data::{errors::DataError, user},
+    models::app::AppState,
+};
+
+pub async fn sign_up_handler() -> Result<Response, AppError> {
     let html_string = SignUpTemplate {
         email: "",
         email_error: "",
         password_error: "",
     }
-    .render()
-    .unwrap();
+    .render()?;
 
-    Html(html_string).into_response()
+    Ok(Html(html_string).into_response())
 }
 
-pub async fn post_sign_up_hander(Form(user_form): Form<AuthFormModel>) -> Response {
+pub async fn post_sign_up_hander(
+    State(app_state): State<AppState>,
+    Form(user_form): Form<AuthFormModel>,
+) -> Result<Response, AppError> {
     match user_form.validate() {
-        Ok(_) => Redirect::to("/").into_response(),
+        Ok(_) => {
+            let result = user::create_user(
+                &app_state.connection_pool,
+                &user_form.email,
+                &user_form.password,
+            )
+            .await;
+
+            if let Err(err) = result {
+                if let DataError::FailedQuery(e) = err {
+                    tracing::error!("Failed to sign up {}", e);
+
+                    return Ok(Redirect::to("/sign-up").into_response());
+                } else {
+                    Err(err)?
+                }
+            }
+
+            Ok(Redirect::to("/log-in").into_response())
+        }
         Err(errs) => {
             let errs = errs.to_string();
 
@@ -46,18 +73,17 @@ pub async fn post_sign_up_hander(Form(user_form): Form<AuthFormModel>) -> Respon
                 email_error: &email_error,
                 password_error: &password_error,
             }
-            .render()
-            .unwrap();
+            .render()?;
 
             let response = Html(html_string).into_response();
 
-            (StatusCode::BAD_REQUEST, response).into_response()
+            Ok((StatusCode::BAD_REQUEST, response).into_response())
         }
     }
 }
 
-pub async fn log_in_handler() -> Response {
+pub async fn log_in_handler() -> Result<Response, AppError> {
     let html_string = LogInTemplate {}.render().unwrap();
 
-    Html(html_string).into_response()
+    Ok(Html(html_string).into_response())
 }

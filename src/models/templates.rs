@@ -23,3 +23,8 @@ pub struct SignUpTemplate<'a> {
 #[derive(Template)]
 #[template(path = "pages/log-in.html")]
 pub struct LogInTemplate {}
+
+
+#[derive(Template)]
+#[template(path = "pages/server-error.html")]
+pub struct ServerErrorTemplate {}
