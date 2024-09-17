@@ -11,4 +11,10 @@ pub fn logging() {
         .finish();
 
     tracing::subscriber::set_global_default(subscriber).expect("Failed to set up logging");
+
+    // tracing::error!("error log");
+    // tracing::warn!("warn log");
+    // tracing::info!("info log");
+    // tracing::debug!("debug log");
+    // tracing::trace!("tracing log");
 }
