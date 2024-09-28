@@ -48,6 +48,22 @@ pub async fn authenticate_user(
     email: &str,
     password: &str,
 ) -> Result<i32, DataError> {
+    //
+    // query using function 👇
+
+    // let query = "SELECT id, password_hash FROM users WHERE email = $1";
+
+    // let row = sqlx::query(query)
+    //     .bind(email)
+    //     .fetch_one(pool)
+    //     .await
+    //     .map_err(|e| match e {
+    //         sqlx::Error::RowNotFound => DataError::FailedQuery("User Not found".into()),
+    //         e => DataError::Query(e),
+    //     })?;
+
+    // let password_hash: Vec<u8> = row.try_get("password_hash")?;
+
     let user = sqlx::query!(
         "SELECT id, password_hash FROM users WHERE email = $1",
         email
