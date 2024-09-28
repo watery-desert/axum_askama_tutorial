@@ -8,8 +8,35 @@ LogIn {%call super()%}
 <meta name="description" content="This is log in page">
 {% endblock %}
 
+{% block css %}
+<link rel="stylesheet" href="/static/css/auth.css">
+{% endblock %}
+
 {% block main %}
-<h1>
-    This is log in page
-</h1>
+<div class="auth-container">
+    <h1 class="auth-heading">Welcome, Log In</h1>
+    <form method="POST" action="/log-in">
+
+        {% if email_error.is_empty() %}
+        <input type="text" placeholder="Enter your email" name="email" value="{{email}}">
+        {% else %}
+        <input class="invalid-input-field animate__animated animate__shakeX" type="text" placeholder="Enter your email"
+            name="email" value="{{email}}">
+        <label>{{email_error}}</label>
+        {% endif %}
+
+        {% if password_error.is_empty() %}
+        <input type="text" placeholder="Enter your password" name="password">
+        {% else %}
+        <input class="invalid-input-field animate__animated animate__shakeX" type="text"
+            placeholder="Enter your password" name="password">
+        <label>{{password_error}}</label>
+        {% endif %}
+
+        <button class="filled-button" type="submit">Submit</button>
+    </form>
+    <form method="GET" action="/sign-up">
+        <button>Already have account? Log In</button>
+    </form>
+</div>
 {% endblock %}

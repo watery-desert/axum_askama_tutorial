@@ -2,19 +2,26 @@ use askama::Template;
 
 #[derive(Template)]
 #[template(path = "pages/home.html")]
-pub struct HomeTemplate {}
+pub struct HomeTemplate {
+    pub is_authenticated: bool,
+}
 
 #[derive(Template)]
 #[template(path = "pages/todos.html")]
-pub struct TodosTemplate {}
+pub struct TodosTemplate {
+    pub is_authenticated: bool,
+}
 
 #[derive(Template)]
 #[template(path = "pages/create.html")]
-pub struct CreateTemplate {}
+pub struct CreateTemplate {
+    pub is_authenticated: bool,
+}
 
 #[derive(Template)]
 #[template(path = "pages/sign-up.html")]
 pub struct SignUpTemplate<'a> {
+    pub is_authenticated: bool,
     pub email: &'a str,
     pub email_error: &'a str,
     pub password_error: &'a str,
@@ -22,9 +29,15 @@ pub struct SignUpTemplate<'a> {
 
 #[derive(Template)]
 #[template(path = "pages/log-in.html")]
-pub struct LogInTemplate {}
-
+pub struct LogInTemplate<'a> {
+    pub is_authenticated: bool,
+    pub email: &'a str,
+    pub email_error: &'a str,
+    pub password_error: &'a str,
+}
 
 #[derive(Template)]
 #[template(path = "pages/server-error.html")]
-pub struct ServerErrorTemplate {}
+pub struct ServerErrorTemplate {
+    pub is_authenticated: bool,
+}

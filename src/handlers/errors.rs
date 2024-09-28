@@ -18,6 +18,9 @@ pub enum AppError {
 
     #[error("Template error")]
     Template(#[from] askama::Error),
+
+    #[error("Failed loading session")]
+    Session(#[from] tower_sessions::session::Error),
 }
 
 impl IntoResponse for AppError {
@@ -25,17 +28,21 @@ impl IntoResponse for AppError {
         let (status, response) = match self {
             AppError::Database(e) => server_error(e.to_string()),
             AppError::Template(e) => server_error(e.to_string()),
-        }; 
+            AppError::Session(e) => server_error(e.to_string()),
+        };
 
         (status, response).into_response()
-
     }
 }
 
 fn server_error(e: String) -> (StatusCode, Response<Body>) {
     tracing::error!("Server error: {}", e);
 
-    let html_string = templates::ServerErrorTemplate {}.render().unwrap();
+    let html_string = templates::ServerErrorTemplate {
+        is_authenticated: false,
+    }
+    .render()
+    .unwrap();
 
     // match html_string {
     //     Ok(html) => (
@@ -51,5 +58,8 @@ fn server_error(e: String) -> (StatusCode, Response<Body>) {
     //     }
     // }
 
-    (StatusCode::INTERNAL_SERVER_ERROR, Html(html_string).into_response())
+    (
+        StatusCode::INTERNAL_SERVER_ERROR,
+        Html(html_string).into_response(),
+    )
 }

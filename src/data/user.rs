@@ -42,3 +42,30 @@ pub async fn create_user(pool: &PgPool, email: &str, password: &str) -> Result<(
     // Simulate Internal server error 👇
     // Err(DataError::Internal("Test error".to_string()))
 }
+
+pub async fn authenticate_user(
+    pool: &PgPool,
+    email: &str,
+    password: &str,
+) -> Result<i32, DataError> {
+    let user = sqlx::query!(
+        "SELECT id, password_hash FROM users WHERE email = $1",
+        email
+    )
+    .fetch_one(pool)
+    .await
+    .map_err(|e| match e {
+        sqlx::Error::RowNotFound => DataError::FailedQuery("Invalid credentials".to_string()),
+        e => DataError::Query(e),
+    })?;
+
+    let hashed_password = String::from_utf8(user.password_hash)?;
+
+    let valid_password = bcrypt::verify(password, &hashed_password)?;
+
+    if !valid_password {
+        Err(DataError::FailedQuery("Invalid credentials".to_string()))
+    } else {
+        Ok(user.id)
+    }
+}

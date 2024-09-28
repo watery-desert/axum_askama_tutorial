@@ -1,6 +1,7 @@
 use axum::{
     body::Body,
     http::{Request, Response},
+    middleware,
     routing::get,
     Router,
 };
@@ -9,23 +10,26 @@ use tower_http::{classify::ServerErrorsFailureClass, services::ServeDir, trace::
 use tracing::Span;
 
 use crate::handlers::{
-    auth::{log_in_handler, post_sign_up_hander, sign_up_handler},
+    auth::{log_in_handler, post_login_handler, post_sign_up_hander, sign_up_handler},
     public::home,
     todos::{create_todo_handler, todos_handler},
 };
 
-use crate::models::app::AppState;
+use crate::{
+    middlewares::{authenticate, required_authentication},
+    models::app::AppState,
+};
 
 pub fn router(app_state: AppState) -> Router {
     let server_dir = ServeDir::new("static");
 
     let app = Router::new()
         .route("/", get(home))
-        .route("/create", get(create_todo_handler))
-        .route("/todos", get(todos_handler))
         .route("/sign-up", get(sign_up_handler).post(post_sign_up_hander))
-        .route("/log-in", get(log_in_handler))
+        .route("/log-in", get(log_in_handler).post(post_login_handler))
         .nest_service("/static", server_dir)
+        .merge(protected_routes())
+        .layer(middleware::from_fn(authenticate))
         .with_state(app_state)
         .layer(
             TraceLayer::new_for_http()
@@ -36,6 +40,13 @@ pub fn router(app_state: AppState) -> Router {
         );
 
     app
+}
+
+fn protected_routes() -> Router<AppState> {
+    Router::new()
+        .route("/create", get(create_todo_handler))
+        .route("/todos", get(todos_handler))
+        .route_layer(middleware::from_fn(required_authentication))
 }
 
 fn on_request(request: &Request<Body>, _: &Span) {
