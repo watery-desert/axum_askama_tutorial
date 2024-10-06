@@ -17,17 +17,25 @@ use super::{errors::AppError, helpers};
 
 use crate::{
     data::{errors::DataError, user},
-    models::app::AppState,
+    models::app::{AppState, FlashStatus},
 };
 
 pub async fn sign_up_handler(
+    session: Session,
     Extension(current_user): Extension<CurrentUser>,
 ) -> Result<Response, AppError> {
+    if current_user.is_authenticated {
+        return Ok(Redirect::to("/todos").into_response());
+    }
+
+    let flash_data = helpers::get_flash(&session).await?;
+
     let html_string = SignUpTemplate {
         is_authenticated: current_user.is_authenticated,
         email: "",
         email_error: "",
         password_error: "",
+        flash_data,
     }
     .render()?;
 
@@ -35,6 +43,7 @@ pub async fn sign_up_handler(
 }
 
 pub async fn post_sign_up_hander(
+    session: Session,
     Extension(current_user): Extension<CurrentUser>,
     State(app_state): State<AppState>,
     Form(user_form): Form<AuthFormModel>,
@@ -50,13 +59,25 @@ pub async fn post_sign_up_hander(
 
             if let Err(err) = result {
                 if let DataError::FailedQuery(e) = err {
-                    tracing::error!("Failed to sign up {}", e);
+                    // session.insert("flash", e).await?;
+                    // session
+                    //     .insert("flash_status", FlashStatus::Error.to_string())
+                    //     .await?;
+
+                    helpers::set_flash(&session, e, FlashStatus::Error.to_string()).await?;
 
                     return Ok(Redirect::to("/sign-up").into_response());
                 } else {
                     Err(err)?
                 }
             }
+
+            helpers::set_flash(
+                &session,
+                "Account created successfully, now login".to_string(),
+                FlashStatus::Success.to_string(),
+            )
+            .await?;
 
             Ok(Redirect::to("/log-in").into_response())
         }
@@ -74,11 +95,14 @@ pub async fn post_sign_up_hander(
                 }
             });
 
+            let flash_data = helpers::get_flash(&session).await?;
+
             let html_string = SignUpTemplate {
                 is_authenticated: current_user.is_authenticated,
                 email: &user_form.email,
                 email_error: &email_error,
                 password_error: &password_error,
+                flash_data,
             }
             .render()?;
 
@@ -90,13 +114,17 @@ pub async fn post_sign_up_hander(
 }
 
 pub async fn log_in_handler(
+    session: Session,
     Extension(current_user): Extension<CurrentUser>,
 ) -> Result<Response, AppError> {
+    let flash_data = helpers::get_flash(&session).await?;
+
     let html_string = LogInTemplate {
         is_authenticated: current_user.is_authenticated,
         email: "",
         email_error: "",
         password_error: "",
+        flash_data,
     }
     .render()?;
 
@@ -123,7 +151,15 @@ pub async fn post_login_handler(
                     session.insert("authenticated_user_id", user_id).await?;
                     Ok(Redirect::to("/todos").into_response())
                 }
-                Err(_) => Ok(Redirect::to("/todos").into_response()),
+                Err(err) => {
+                    if let DataError::FailedQuery(e) = err {
+                        helpers::set_flash(&session, e, FlashStatus::Error.to_string()).await?;
+
+                        Ok(Redirect::to("/log-in").into_response())
+                    } else {
+                        Err(err)?
+                    }
+                }
             }
         }
         Err(errs) => {
@@ -140,11 +176,14 @@ pub async fn post_login_handler(
                 }
             });
 
+            let flash_data = helpers::get_flash(&session).await?;
+
             let html_string = LogInTemplate {
                 is_authenticated: current_user.is_authenticated,
                 email: &user_form.email,
                 email_error: &email_error,
                 password_error: &password_error,
+                flash_data,
             }
             .render()?;
 
@@ -153,4 +192,10 @@ pub async fn post_login_handler(
             Ok((StatusCode::BAD_REQUEST, response).into_response())
         }
     }
+}
+
+pub async fn log_out_handler(session: Session) -> Result<Response, AppError> {
+    session.remove::<i32>("authenticated_user_id").await?;
+
+    Ok(Redirect::to("/").into_response())
 }

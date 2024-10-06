@@ -13,6 +13,7 @@ LogIn {%call super()%}
 {% endblock %}
 
 {% block main %}
+{% include "partials/flash.html" %}
 <div class="auth-container">
     <h1 class="auth-heading">Welcome, Log In</h1>
     <form method="POST" action="/log-in">

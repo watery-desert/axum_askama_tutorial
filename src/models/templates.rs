@@ -1,3 +1,4 @@
+use super::app::FlashData;
 use askama::Template;
 
 #[derive(Template)]
@@ -25,6 +26,7 @@ pub struct SignUpTemplate<'a> {
     pub email: &'a str,
     pub email_error: &'a str,
     pub password_error: &'a str,
+    pub flash_data: FlashData,
 }
 
 #[derive(Template)]
@@ -34,10 +36,17 @@ pub struct LogInTemplate<'a> {
     pub email: &'a str,
     pub email_error: &'a str,
     pub password_error: &'a str,
+    pub flash_data: FlashData,
 }
 
 #[derive(Template)]
 #[template(path = "pages/server-error.html")]
 pub struct ServerErrorTemplate {
+    pub is_authenticated: bool,
+}
+
+#[derive(Template)]
+#[template(path = "pages/not-found.html")]
+pub struct PageNotFoundTemplate {
     pub is_authenticated: bool,
 }

@@ -1,0 +1,7 @@
+{%if !flash_data.flash.is_empty() %}
+<div id="flash">
+    <p class="flash-message {{flash_data.flash_status}}">
+        {{flash_data.flash}}
+    </p>
+</div>
+{% endif %}
