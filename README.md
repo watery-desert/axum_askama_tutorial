@@ -21,3 +21,6 @@
 
 ▶️ [Form validation and setup postgreSQL database connection](https://youtu.be/I3nKm7XqZ0g) <br>
 [Source Code](https://github.com/watery-desert/axum_askama_tutorial/tree/03)
+
+[04 - Signing Up a new user and error handling](https://youtu.be/GOMoEnu-tQ0) <br>
+[Source Code](https://github.com/watery-desert/axum_askama_tutorial/tree/04)
