@@ -14,10 +14,10 @@ serde = {version = "1.0.209", features = ["derive"]}
 validator = { version = "0.18.1", features = ["derive"] }
 regex = "1.10.6"
 dotenvy = "0.15.7"
-sqlx = {version = "0.8.0", features = [ "runtime-tokio", "tls-rustls", "postgres", "macros"]}
+sqlx = {version = "0.8.0", features = [ "runtime-tokio", "tls-rustls", "postgres", "macros", "chrono"]}
 bcrypt = "0.15.1"
 thiserror = "1.0.63"
 tower-sessions = { version = "0.13.0"}
 tower-sessions-sqlx-store = {version = "0.14.0", features = ["postgres"]}
 time = "0.3.36"
-chrono = "0.4.38"
+chrono = {version = "0.4.38", features = ["serde"]}
