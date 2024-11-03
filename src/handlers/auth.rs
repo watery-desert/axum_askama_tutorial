@@ -1,7 +1,10 @@
-use crate::models::{
-    app::CurrentUser,
-    templates::{LogInTemplate, SignUpTemplate},
-    user_form_model::AuthFormModel,
+use crate::{
+    handle_client_error,
+    models::{
+        app::CurrentUser,
+        templates::{LogInTemplate, SignUpTemplate},
+        user_form_model::AuthFormModel,
+    },
 };
 use askama::Template;
 use axum::{
@@ -16,7 +19,7 @@ use validator::Validate;
 use super::{errors::AppError, helpers};
 
 use crate::{
-    data::{errors::DataError, user},
+    data::user,
     models::app::{AppState, FlashStatus},
 };
 
@@ -57,20 +60,7 @@ pub async fn post_sign_up_hander(
             )
             .await;
 
-            if let Err(err) = result {
-                if let DataError::FailedQuery(e) = err {
-                    // session.insert("flash", e).await?;
-                    // session
-                    //     .insert("flash_status", FlashStatus::Error.to_string())
-                    //     .await?;
-
-                    helpers::set_flash(&session, e, FlashStatus::Error.to_string()).await?;
-
-                    return Ok(Redirect::to("/sign-up").into_response());
-                } else {
-                    Err(err)?
-                }
-            }
+            handle_client_error!(result, &session, Redirect::to("/sign-up").into_response());
 
             helpers::set_flash(
                 &session,
@@ -146,21 +136,11 @@ pub async fn post_login_handler(
             )
             .await;
 
-            match user_id {
-                Ok(user_id) => {
-                    session.insert("authenticated_user_id", user_id).await?;
-                    Ok(Redirect::to("/todos").into_response())
-                }
-                Err(err) => {
-                    if let DataError::FailedQuery(e) = err {
-                        helpers::set_flash(&session, e, FlashStatus::Error.to_string()).await?;
+            let user_id =
+                handle_client_error!(user_id, &session, Redirect::to("/log-in").into_response());
 
-                        Ok(Redirect::to("/log-in").into_response())
-                    } else {
-                        Err(err)?
-                    }
-                }
-            }
+            session.insert("authenticated_user_id", user_id).await?;
+            Ok(Redirect::to("/todos").into_response())
         }
         Err(errs) => {
             let errs = errs.to_string();

@@ -1,4 +1,5 @@
 use super::app::FlashData;
+use crate::data::todo::Todo;
 use askama::Template;
 
 #[derive(Template)]
@@ -11,6 +12,8 @@ pub struct HomeTemplate {
 #[template(path = "pages/todos.html")]
 pub struct TodosTemplate {
     pub is_authenticated: bool,
+    pub flash_data: FlashData,
+    pub todos: Vec<Todo>,
 }
 
 #[derive(Template)]

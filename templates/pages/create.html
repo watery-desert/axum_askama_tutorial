@@ -9,7 +9,8 @@ Create {%call super()%}
 {% endblock %}
 
 {% block main %}
-<h1>
-    This is create page
-</h1>
+<form method="POST" action="/todos/create">
+    <input type="text" placeholder="Add your todo" name="task">
+    <button class="filled-button" type="submit">Add Todo</button>
+</form>
 {% endblock %}
