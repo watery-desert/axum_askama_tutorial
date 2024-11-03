@@ -1,4 +1,9 @@
 <div align="left">
+
+[![WateryDesert](https://img.shields.io/badge/WateryDesert-Website-F8D977?style=for-the-badge)](https://waterydesert.com)
+</div>
+
+<div align="left">
       <a href="https://youtu.be/GOMoEnu-tQ0">
          <img src="https://img.youtube.com/vi/GOMoEnu-tQ0/0.jpg" style="width:50%;">
       </a>
@@ -17,3 +22,6 @@
 
 ▶ [Signing Up a new user and error handling](https://youtu.be/GOMoEnu-tQ0) <br>
 [Source Code](https://github.com/watery-desert/axum_askama_tutorial/tree/04)
+
+[05 - Log In using session and cookies](https://youtu.be/6Qmm6nrAWlk) <br>
+[Source Code](https://github.com/watery-desert/axum_askama_tutorial/tree/05)
