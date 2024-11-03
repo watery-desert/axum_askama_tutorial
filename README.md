@@ -24,3 +24,6 @@
 
 [04 - Signing Up a new user and error handling](https://youtu.be/GOMoEnu-tQ0) <br>
 [Source Code](https://github.com/watery-desert/axum_askama_tutorial/tree/04)
+
+[05 - Log In using session and cookies](https://youtu.be/6Qmm6nrAWlk) <br>
+[Source Code](https://github.com/watery-desert/axum_askama_tutorial/tree/05)
