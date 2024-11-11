@@ -28,7 +28,7 @@ pub async fn sign_up_handler(
     Extension(current_user): Extension<CurrentUser>,
 ) -> Result<Response, AppError> {
     if current_user.is_authenticated {
-        return Ok(Redirect::to("/todos").into_response());
+        return Ok(Redirect::to("/todos/1").into_response());
     }
 
     let flash_data = helpers::get_flash(&session).await?;
@@ -140,7 +140,7 @@ pub async fn post_login_handler(
                 handle_client_error!(user_id, &session, Redirect::to("/log-in").into_response());
 
             session.insert("authenticated_user_id", user_id).await?;
-            Ok(Redirect::to("/todos").into_response())
+            Ok(Redirect::to("/todos/1").into_response())
         }
         Err(errs) => {
             let errs = errs.to_string();

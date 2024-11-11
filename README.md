@@ -1,6 +1,11 @@
 <div align="left">
-      <a href="https://youtu.be/I3nKm7XqZ0g">
-         <img src="https://img.youtube.com/vi/I3nKm7XqZ0g/0.jpg" style="width:50%;">
+
+[![WateryDesert](https://img.shields.io/badge/WateryDesert-Website-F8D977?style=for-the-badge)](https://waterydesert.com)
+</div>
+
+<div align="left">
+      <a href="https://youtu.be/6Qmm6nrAWlk">
+         <img src="https://img.youtube.com/vi/6Qmm6nrAWlk/0.jpg" style="width:50%;">
       </a>
 </div>
 
@@ -12,5 +17,11 @@
 [02 - Logging and extracting form data](https://youtu.be/IbuNH9hm7ac) <br>
 [Source Code](https://github.com/watery-desert/axum_askama_tutorial/tree/02)
 
-▶️ [Form validation and setup postgreSQL database connection](https://youtu.be/I3nKm7XqZ0g) <br>
+[03 - Form validation and setup postgreSQL database connection](https://youtu.be/I3nKm7XqZ0g) <br>
 [Source Code](https://github.com/watery-desert/axum_askama_tutorial/tree/03)
+
+[04 - Signing Up a new user and error handling](https://youtu.be/GOMoEnu-tQ0) <br>
+[Source Code](https://github.com/watery-desert/axum_askama_tutorial/tree/04)
+
+▶ [Log In using session and cookies](https://youtu.be/6Qmm6nrAWlk) <br>
+[Source Code](https://github.com/watery-desert/axum_askama_tutorial/tree/05)

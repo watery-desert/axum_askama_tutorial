@@ -24,13 +24,31 @@ Todos {%call super()%}
 
 <div class="card">
     <div>
+
+        <form method="POST" , action="/todos/toggle/{{todo.id}}?page={{current_page}}">
+            <input type="hidden" name="is_done" value="{{!todo.is_done}}">
+            {% if todo.is_done %}
+            <button class="undone-button" type="submit">Undone</button>
+            {% else %}
+            <button class="done-button" type="submit">Done</button>
+            {% endif %}
+
+        </form>
+
         <div>
             <p class="todo-task">{{todo.task}}</p>
+            <p>{{todo_date(todo.created_at.clone())}}</p>
         </div>
     </div>
+
+    <form method="POST" , action="/todos/delete/{{todo.id}}?page={{current_page}}">
+        <button class="delete-button" type="submit">DELETE</button>
+    </form>
 </div>
-    
+
 {% endfor %}
+
+{% include "partials/pagination.html" %}
 
 {% endif %}
 

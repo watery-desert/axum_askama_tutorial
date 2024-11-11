@@ -33,13 +33,21 @@ pub async fn create(pool: &PgPool, task: &str, author_id: &i32) -> Result<(), Da
     Ok(())
 }
 
-pub async fn get_all(pool: &PgPool, author_id: &i32) -> Result<Vec<Todo>, DataError> {
+pub async fn get_all(
+    pool: &PgPool,
+    author_id: &i32,
+    page_size: &i32,
+    page: &i32,
+) -> Result<Vec<Todo>, DataError> {
     let todos: Vec<Todo> = sqlx::query_as(
         "SELECT id, task, is_done, created_at
         FROM todo WHERE author_id = $1
-        ORDER BY todo.created_at DESC",
+        ORDER BY todo.created_at DESC 
+        LIMIT $2 OFFSET $3",
     )
     .bind(author_id)
+    .bind(page_size)
+    .bind(page_offset(page, page_size))
     .fetch_all(pool)
     .await?;
 
@@ -64,4 +72,18 @@ pub async fn delete(pool: &PgPool, todo_id: &i32) -> Result<(), DataError> {
         .await?;
 
     Ok(())
+}
+
+pub async fn get_total_todos(pool: &PgPool) -> Result<i32, DataError> {
+    let total_todos = sqlx::query_scalar!("SELECT COUNT(*)::INT4 FROM todo")
+        .fetch_one(pool)
+        .await?
+        .unwrap_or(0);
+
+    Ok(total_todos)
+}
+
+// you can create this in a separete file
+fn page_offset(page: &i32, page_size: &i32) -> i32 {
+    (page - 1) * page_size
 }
