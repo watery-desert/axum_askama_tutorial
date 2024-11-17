@@ -1,17 +1,20 @@
 <div>
     <span>Page {{ current_page }} of {{ total_pages }}</span>
     <span class="pagination-btns">
-        {% if total_pages != 1 %}
-        {% if current_page > 1 %}
-        <a class="pagination-btn" href="/todos/{{ previous_page( current_page.clone()) }}">
-            <p> Previous</p>
-        </a>
+        {% if total_pages > 1 %}
+            {% if current_page > 1 %}
+                <a class="pagination-btn" href="/todos/{{ previous_page( current_page.clone()) }}">
+                    <p> Previous</p>
+                </a>
+            {% endif %}
+
+            {% if current_page < total_pages %} 
+                <a class="pagination-btn"
+                    href="/todos/{{ next_page( current_page.clone()) }}">
+                    <p> Next</p>
+                </a>
+            {% endif %}
+
         {% endif %}
-        {% if current_page < total_pages %} <a class="pagination-btn"
-            href="/todos/{{ next_page( current_page.clone()) }}">
-            <p> Next</p>
-            </a>
-            {% endif %}
-            {% endif %}
     </span>
 </div>

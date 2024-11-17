@@ -31,10 +31,8 @@ pub async fn todos_handler(
 
     let page_size: i32 = 3;
 
-    let (todos, total_todos) = tokio::try_join!(
-        todo::get_all(&app_state.connection_pool, &user_id, &page_size, &page),
-        todo::get_total_todos(&app_state.connection_pool)
-    )?;
+    let todos = todo::get_all(&app_state.connection_pool, &user_id, &page_size, &page).await?;
+    let total_todos = todo::get_total_todos(&app_state.connection_pool).await?;
 
     let total_pages = (total_todos + page_size - 1) / page_size;
 
