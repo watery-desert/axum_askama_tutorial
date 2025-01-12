@@ -29,5 +29,5 @@
 [06 - Log out, 404 page and flash message](https://youtu.be/BHqLC6Xaj9A) <br>
 [Source Code](https://github.com/watery-desert/axum_askama_tutorial/tree/06) 
 
-▶ [Todo CRUD, Pagination](https://youtu.be/9iWXv4XOzBI) <br>
+▶ [Todo CRUD, Pagination](https://youtu.be/zO1ST0M92uY) <br>
 [Source Code](https://github.com/watery-desert/axum_askama_tutorial/tree/07) 
