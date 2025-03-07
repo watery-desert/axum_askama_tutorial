@@ -31,3 +31,6 @@
 
 ▶ [Todo CRUD, Pagination](https://youtu.be/zO1ST0M92uY) <br>
 [Source Code](https://github.com/watery-desert/axum_askama_tutorial/tree/07) 
+
+[08 - Ip logging, CSP, Secure headers](https://youtu.be/pI2hLyHTUA4) <br>
+[Source Code](https://github.com/watery-desert/axum_askama_tutorial/tree/08) 
