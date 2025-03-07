@@ -1,3 +1,5 @@
+use std::net::SocketAddr;
+
 use axum_askama_tutorial::{init, models::app::AppState, routes};
 
 #[tokio::main]
@@ -24,7 +26,10 @@ async fn main() {
 
     let app = routes::router(app_state).layer(session_layer);
 
-    axum::serve(listener, app)
-        .await
-        .expect("Failed to start the server");
+    axum::serve(
+        listener,
+        app.into_make_service_with_connect_info::<SocketAddr>(),
+    )
+    .await
+    .expect("Failed to start the server");
 }

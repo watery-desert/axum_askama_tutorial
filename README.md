@@ -4,8 +4,8 @@
 </div>
 
 <div align="left">
-      <a href="https://youtu.be/9iWXv4XOzBI">
-         <img src="https://img.youtube.com/vi/9iWXv4XOzBI/0.jpg" style="width:50%;">
+      <a href="https://youtu.be/pI2hLyHTUA4">
+         <img src="https://img.youtube.com/vi/pI2hLyHTUA4/0.jpg" style="width:50%;">
       </a>
 </div>
 
@@ -29,5 +29,8 @@
 [06 - Log out, 404 page and flash message](https://youtu.be/BHqLC6Xaj9A) <br>
 [Source Code](https://github.com/watery-desert/axum_askama_tutorial/tree/06) 
 
-▶ [Todo CRUD, Pagination](https://youtu.be/9iWXv4XOzBI) <br>
+[07 - Todo CRUD, Pagination](https://youtu.be/9iWXv4XOzBI) <br>
 [Source Code](https://github.com/watery-desert/axum_askama_tutorial/tree/07) 
+
+▶ [Ip logging, CSP, Secure headers](https://youtu.be/pI2hLyHTUA4) <br>
+[Source Code](https://github.com/watery-desert/axum_askama_tutorial/tree/08) 
