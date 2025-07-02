@@ -1,0 +1,12 @@
+target/
+scripts/
+
+README.md
+
+.github/
+.git/
+
+.gitignore
+.justfile
+.env
+
