@@ -26,3 +26,7 @@ pub async fn page_not_found_handler(
 
     Ok((StatusCode::NOT_FOUND, Html(html_string)).into_response())
 }
+
+pub async fn get_health_check() -> Response {
+    StatusCode::OK.into_response()
+}
