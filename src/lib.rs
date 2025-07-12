@@ -4,3 +4,4 @@ pub mod handlers;
 pub mod init;
 pub mod data;
 pub mod middlewares;
+pub mod app;
