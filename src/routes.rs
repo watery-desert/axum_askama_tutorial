@@ -4,7 +4,7 @@ use axum::{
     Router,
 };
 
-use tower_http::{services::ServeDir, trace::TraceLayer};
+use tower_http::trace::TraceLayer;
 
 use crate::{
     handlers::{
@@ -12,7 +12,7 @@ use crate::{
             log_in_handler, log_out_handler, post_login_handler, post_sign_up_hander,
             sign_up_handler,
         },
-        public::{home, page_not_found_handler},
+        public::{get_embeded_static_files, home, page_not_found_handler},
         todos::{
             create_todo_handler, delete_todo_handler, post_create_todo_handler, todos_handler,
             toggle_todo_handler,
@@ -28,12 +28,13 @@ use crate::{
 };
 
 pub fn router(app_state: AppState) -> Router {
-    let server_dir = ServeDir::new("static");
+    // let server_dir = ServeDir::new("static");
 
     let app = Router::new()
         .route("/", get(home))
+        .route("/static/*file_path", get(get_embeded_static_files))
         .merge(auth_routes())
-        .nest_service("/static", server_dir)
+        // .nest_service("/static", server_dir)
         .merge(protected_routes())
         .fallback(page_not_found_handler)
         .layer(middleware::from_fn(authenticate))

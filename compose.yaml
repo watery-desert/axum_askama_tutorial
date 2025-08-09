@@ -1,0 +1,32 @@
+name: axum-askama-tutorial
+
+
+services:  
+  website:
+    container_name: website
+    build: .
+    depends_on:
+      - db
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: "postgres://${DB_USER}:${DB_PASSWORD}@db:5432/${DB_NAME}"
+      TZ: Europe/Berlin
+    ports:
+      - "8000:8000"
+    networks:
+      - app-network  
+
+
+  db: 
+    image: postgres:16.6-alpine
+    container_name: db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    networks:
+      - app-network  
+
+networks:
+  app-network:      

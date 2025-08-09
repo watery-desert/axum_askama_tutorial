@@ -29,6 +29,8 @@ RUN cargo chef cook --release --recipe-path recipe.json
 # Build application
 COPY . .
 
+ENV SQLX_OFFLINE=true
+
 RUN cargo build --release
 # -----------------------------------------
 
@@ -37,9 +39,9 @@ RUN cargo build --release
 
 FROM debian:bullseye-slim
 
-COPY --from=builder /app/target/release/dummy /usr/local/bin
+COPY --from=builder /app/target/release/axum_askama_tutorial /usr/local/bin
 
-EXPOSE 9090
+# EXPOSE 9090
 
-ENTRYPOINT [ "/usr/local/bin/dummy" ]
+ENTRYPOINT [ "/usr/local/bin/axum_askama_tutorial" ]
 # -----------------------------------------    

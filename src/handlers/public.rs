@@ -1,11 +1,14 @@
 use super::errors::AppError;
-use crate::models::{
-    app::CurrentUser,
-    templates::{HomeTemplate, PageNotFoundTemplate},
+use crate::{
+    handlers::helpers::StaticFile,
+    models::{
+        app::CurrentUser,
+        templates::{HomeTemplate, PageNotFoundTemplate},
+    },
 };
 use askama::Template;
-use axum::http::StatusCode;
 use axum::response::{Extension, Html, IntoResponse, Response};
+use axum::{extract::Path, http::StatusCode};
 
 pub async fn home(Extension(current_user): Extension<CurrentUser>) -> Result<Response, AppError> {
     let html_string = HomeTemplate {
@@ -29,4 +32,8 @@ pub async fn page_not_found_handler(
 
 pub async fn get_health_check() -> Response {
     StatusCode::OK.into_response()
+}
+
+pub async fn get_embeded_static_files(Path(file_path): Path<String>) -> Response {
+    StaticFile(file_path).into_response()
 }

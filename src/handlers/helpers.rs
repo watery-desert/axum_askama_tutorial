@@ -1,5 +1,7 @@
 use super::errors::AppError;
 use crate::models::app::FlashData;
+use axum::{http::{header, StatusCode}, response::{IntoResponse, Response}};
+use rust_embed::Embed;
 use tower_sessions::Session;
 
 pub fn extract_error<F>(input: &str, mut f: F)
@@ -38,4 +40,28 @@ pub async fn set_flash(session: &Session, message: String, status: String) -> Re
     session.insert("flash_status", status).await?;
 
     Ok(())
+}
+
+
+#[derive(Embed)]
+#[folder = "static/"]
+struct Asset;
+
+pub struct StaticFile<T>(pub T);
+
+impl<T> IntoResponse for StaticFile<T>
+where
+    T: Into<String>,
+{
+    fn into_response(self) -> Response {
+        let path = self.0.into();
+
+        match Asset::get(path.as_str()) {
+            Some(content) => {
+                let mime = mime_guess::from_path(path).first_or_octet_stream();
+                ([(header::CONTENT_TYPE, mime.as_ref())], content.data).into_response()
+            }
+            None => (StatusCode::NOT_FOUND).into_response(),
+        }
+    }
 }

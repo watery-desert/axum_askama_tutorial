@@ -21,7 +21,8 @@ tower-sessions = { version = "0.13.0"}
 tower-sessions-sqlx-store = {version = "0.14.0", features = ["postgres"]}
 time = "0.3.36"
 chrono = {version = "0.4.38", features = ["serde"]}
-
+rust-embed="8.7.2"
+mime_guess = "2.0.5"
 
 [dev-dependencies]
 tower = "0.5.2" 
